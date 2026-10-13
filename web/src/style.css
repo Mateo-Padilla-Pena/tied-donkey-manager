@@ -1,0 +1,399 @@
+/* Light theme (default) */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --border: #e6e6e6;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --primary: #2563eb;
+  --primary-soft: #eaf1ff;
+  /* Sidebar: dark grey with white text in light mode, for contrast */
+  --sidebar: #1f1f1f;
+  --sidebar-text: #ffffff;
+  --sidebar-muted: rgb(255 255 255 / 0.75);
+  --sidebar-border: rgb(255 255 255 / 0.2);
+  --sidebar-hover: rgb(255 255 255 / 0.12);
+  --sidebar-active: rgb(255 255 255 / 0.2);
+  --sidebar-accent: #ffffff;
+  --sidebar-icon: rgb(255 255 255 / 0.75);
+  --sidebar-panel: rgb(0 0 0 / 0.18);
+  --sidebar-card: rgb(0 0 0 / 0.22);
+  --sidebar-card-border: rgb(255 255 255 / 0.2);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: light;
+}
+
+/* Dark theme: black base with white text and blue accents */
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --border: #1f1f1f;
+  --text: #ffffff;
+  --muted: #8a8a8a;
+  --primary: #3b82f6;
+  --primary-soft: #0c1f3f;
+  /* Sidebar: black with white text in dark mode */
+  --sidebar: #050505;
+  --sidebar-text: #ffffff;
+  --sidebar-muted: #8a8a8a;
+  --sidebar-border: #1a1a1a;
+  --sidebar-hover: #141414;
+  --sidebar-active: rgb(37 99 235 / 0.2);
+  --sidebar-accent: #3b82f6;
+  --sidebar-icon: #8a8a8a;
+  --sidebar-panel: #1c1c1c;
+  --sidebar-card: #0a0a0a;
+  --sidebar-card-border: #2a2a2a;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 650;
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1rem;
+  gap: 1.5rem;
+  color: var(--sidebar-text);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 650;
+  font-size: 1.05rem;
+  padding: 0 0.5rem;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  padding: 3px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  color: var(--sidebar-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--sidebar-icon);
+}
+
+.nav-link:hover .nav-icon,
+.nav-link.router-link-active .nav-icon {
+  color: var(--sidebar-text);
+}
+
+.nav-link:hover {
+  color: var(--sidebar-text);
+  background: var(--sidebar-hover);
+}
+
+.nav-link.router-link-active {
+  background: var(--sidebar-active);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--sidebar-accent);
+}
+
+/* Footer holds only the logout button, no background panel */
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-card {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: var(--sidebar-card);
+  border: 1px solid var(--sidebar-card-border);
+}
+
+.user-label {
+  font-size: 0.7rem;
+  color: var(--sidebar-muted);
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sidebar-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Square logout button, no rounding */
+.logout-btn {
+  flex-shrink: 0;
+  border-radius: 0 !important;
+}
+
+/* Main column: top header with the theme toggle, then the page */
+.workspace {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar: separated from the page by a background and a bottom border */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 2.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.session-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.session-info strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-header .icon-btn {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.app-header .icon-btn:hover {
+  background: var(--primary-soft);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem 2.5rem 2rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header .muted {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Toolbar: search and filters above the table */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar-search {
+  min-width: 280px;
+  flex: 1;
+}
+
+.toolbar-filter {
+  min-width: 200px;
+  max-width: 260px;
+}
+
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+/* Theme toggle */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--sidebar-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sidebar-text);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--sidebar-hover);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Login */
+.login {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+}
+
+.login .theme-toggle {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.login .theme-toggle:hover {
+  background: var(--primary-soft);
+}
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.login-logo {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+}
+
+.login-brand h1 {
+  font-size: 1.4rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebar-footer {
+    margin-top: 0;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .content {
+    padding: 1.25rem;
+  }
+}
+
+/* Rounded Vuetify components: shapes applied globally so every field and button matches */
+.v-field {
+  --v-field-border-radius: 16px;
+  border-radius: 16px !important;
+}
+
+.v-btn {
+  border-radius: 999px !important;
+}
+
+.v-card,
+.v-alert,
+.v-dialog .v-card {
+  border-radius: 20px !important;
+}
+
+.v-chip {
+  border-radius: 999px !important;
+}
+
+.toolbar-search,
+.toolbar-filter {
+  --v-field-border-radius: 16px;
+}

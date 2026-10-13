@@ -1,0 +1,90 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// App user linked to a Firebase Auth identity (OAuth providers)
+model User {
+  id          String   @id @default(uuid())
+  firebaseUid String   @unique
+  email       String?  @unique
+  fullName    String?
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([companyId])
+}
+
+// Company that owns the data; rows are created outside the API (not administrable)
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Supplier {
+  id                String    @id @default(uuid())
+  name              String
+  location          String?
+  commercialContext String?
+  products          Product[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Category {
+  id        String            @id @default(uuid())
+  name      String            @unique
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  products  ProductCategory[]
+}
+
+model Product {
+  id            String            @id @default(uuid())
+  internalName  String
+  publishName   String
+  sku           String?           @unique
+  providerSku   String?
+  supplierPrice Decimal           @db.Decimal(12, 2)
+  supplierId    String
+  supplier      Supplier          @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  notes         String?
+  details       String?
+  categories    ProductCategory[]
+  images        ProductImage[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model ProductCategory {
+  productId  String
+  categoryId String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([productId, categoryId])
+}
+
+model ProductImage {
+  id          String   @id @default(uuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  storagePath String
+  contentType String
+  sizeBytes   Int
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
